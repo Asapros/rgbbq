@@ -42,13 +42,15 @@ void ObstacleSystem::tick() {
 }
 
 void ObstacleSystem::draw() {
+    BeginBlendMode(BLEND_ADDITIVE);
     for (Obstacle &obstacle : this->obstacles) {
         DrawRectangle(
             obstacle.position.x,
             obstacle.position.y,
             obstacle.area_of_effect.x,
             obstacle.area_of_effect.y,
-            Fade(obstacle_color_to_raylib(obstacle.color), obstacle.triggered ? 1.0f : 0.5f)
+            Fade(obstacle_color_to_raylib(obstacle.color), obstacle.triggered ? 1.0f : 0.4f)
         );
     }
+    EndBlendMode();
 }
