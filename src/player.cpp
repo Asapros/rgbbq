@@ -5,7 +5,7 @@
 void PlayerSystem::init() {
     this->state->player_position = { 0, 0 };
 }
-const float speed = 3.0;
+const float speed = 6.0;
 
 void PlayerSystem::tick() {
     Vector2 velocity = { 0, 0 };

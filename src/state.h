@@ -6,5 +6,6 @@
 
 struct GameState {
     Vector2 player_position;
-    std::vector<ObstacleColor> trigerred_counters;
+    Vector2 ground_dimensions;
+    std::vector<ObstacleColor> triggered_counters;
 };

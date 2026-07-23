@@ -1,7 +1,7 @@
 #include "game.h"
 #include "camera.h"
-#include "controls.h"
 #include "counter.h"
+#include "level.h"
 #include "obstacle.h"
 #include "player.h"
 #include "tilemap.h"
@@ -10,11 +10,11 @@
 
 Game::Game() {
     this->systems.emplace_back(std::make_unique<TilemapSystem>(this->state));
-    this->systems.emplace_back(std::make_unique<ControlsSystem>(this->state));
-    this->systems.emplace_back(std::make_unique<PlayerSystem>(this->state));
     this->systems.emplace_back(std::make_unique<CameraSystem>(this->state));
     this->systems.emplace_back(std::make_unique<CounterSystem>(this->state));
     this->systems.emplace_back(std::make_unique<ObstacleSystem>(this->state));
+    this->systems.emplace_back(std::make_unique<PlayerSystem>(this->state));
+    this->systems.emplace_back(std::make_unique<LevelSystem>(this->state));
 }
 
 void Game::init() {

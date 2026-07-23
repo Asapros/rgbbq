@@ -16,9 +16,9 @@ void Counter::tick() {
 
 void CounterSystem::init() {
     this->counters = {
+        Counter(ObstacleColor::Green, 5),
         Counter(ObstacleColor::Red, 5),
-        Counter(ObstacleColor::Green, 10),
-        Counter(ObstacleColor::Blue, 10)
+        Counter(ObstacleColor::Blue, 5),
     };
 }
 
@@ -37,7 +37,7 @@ void CounterSystem::tick() {
     for (Counter &counter : this->counters) {
         counter.tick();
         if (counter.remaining_seconds < 0) {
-            this->state->trigerred_counters.emplace_back(counter.color);
+            this->state->triggered_counters.emplace_back(counter.color);
         }
     }
     std::erase_if(this->counters, [](const Counter& counter) {
