@@ -4,6 +4,10 @@
 
 
 struct LevelSystem : System {
+    private:
+        int level;
+        int stage;
+    public:
     using System::System;
 
     void init() override;

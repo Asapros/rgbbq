@@ -3,6 +3,7 @@
 
 void ObstacleSystem::init() {
     this->obstacles = {};
+    this->state->remaining_obstacles = 0;
 }
 
 const int MARGIN = 25;
@@ -10,6 +11,7 @@ const int MARGIN = 25;
 void ObstacleSystem::tick() {
     for (Obstacle& obstacle : this->state->waiting_obstacles) {
         this->obstacles.push_back(obstacle);
+        this->state->remaining_obstacles += 1;
     }
     this->state->waiting_obstacles.clear();
 
@@ -23,6 +25,9 @@ void ObstacleSystem::tick() {
     for (Obstacle &obstacle : this->obstacles) {
         if (!obstacle.triggered) { continue; }
         obstacle.remaining_seconds -= GetFrameTime();
+        if (obstacle.remaining_seconds < 0) {
+            this->state->remaining_obstacles -= 1;
+        }
     }
     std::erase_if(this->obstacles, [](const Obstacle& obstacle) {
         return obstacle.triggered && obstacle.remaining_seconds < 0;
