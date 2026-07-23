@@ -1,3 +1,4 @@
+#include "game.h"
 #include <raylib.h>
 
 int main()
@@ -8,14 +9,18 @@ int main()
     ToggleBorderlessWindowed();
 
     SetTargetFPS(0);
+    
+    Game game;
+
+    game.init();
 
     while (!WindowShouldClose())
     {
         BeginDrawing();
-
         ClearBackground(RAYWHITE);
-
-        DrawText("Hello, raylib2!", 20, 20, 30, DARKGRAY);
+        
+        game.tick();
+        game.draw();
 
         EndDrawing();
     }
