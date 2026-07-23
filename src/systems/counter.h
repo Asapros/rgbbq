@@ -8,6 +8,7 @@
 struct CounterSystem : System {
     private:
     std::vector<Counter> counters;
+    Texture2D texture;
 
     public:
     using System::System;

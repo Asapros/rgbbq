@@ -4,6 +4,7 @@
 
 void CounterSystem::init() {
     this->counters = {};
+    this->texture = LoadTexture("../assets/timer.png");
 }
 
 void CounterSystem::tick() {
@@ -35,15 +36,22 @@ void CounterSystem::tick() {
 }
 
 void CounterSystem::after_draw() {
-    const int COUNTER_HEIGHT = 400;
-    const int COUNTER_WIDTH = 400;
-    const int GAP = 200;
+    const int SCALE = 16;
+    const int FONT_SIZE = 120;
 
     for (size_t i = 0; i < this->counters.size(); i++) {
         Counter counter = this->counters[i];
-        float x_offset = (COUNTER_WIDTH + GAP) * i;
-        DrawRectangle(x_offset, 0, COUNTER_WIDTH, COUNTER_HEIGHT, GRAY);
-        DrawRectangle(x_offset, COUNTER_HEIGHT/2, COUNTER_WIDTH, COUNTER_HEIGHT/2, obstacle_color_to_raylib(counter.color));
-        DrawText(std::format("{:04.1f}", counter.remaining_seconds).c_str(), 50 + x_offset, 50, 150, BLACK);
+        float x_offset = i * SCALE * this->texture.width;
+        DrawRectangle(
+            x_offset,
+            this->texture.height * SCALE / 2.0f,
+            this->texture.width * SCALE,
+            this->texture.height * SCALE / 2,
+            obstacle_color_to_raylib(counter.color)
+        );
+        DrawTextureEx(this->texture, { x_offset, 0 }, 0.0f, SCALE, WHITE);
+        std::string text = std::format("{:01.1f}", counter.remaining_seconds);
+        int width = MeasureText(text.c_str(), FONT_SIZE);
+        DrawText(text.c_str(), x_offset + this->texture.width*SCALE/2.0f-width/2.0f, this->texture.height*SCALE/4.0f-32.0f, FONT_SIZE, WHITE);
     }
 }
