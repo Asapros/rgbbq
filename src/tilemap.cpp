@@ -2,5 +2,5 @@
 #include <raylib.h>
 
 void TilemapSystem::draw() {
-    DrawRectangle(0, 0, 100, 100, DARKBLUE);
+    DrawRectangle(-450, -450, 1000, 1000, DARKBLUE);
 }

@@ -1,17 +1,15 @@
 #include "camera.h"
-#include <iostream>
 #include <raylib.h>
 
 void CameraSystem::init() {
     this->camera = Camera2D();
     this->camera.zoom = 1;
-    this->camera.offset = { 0, 0 };
+    this->camera.offset = { GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f };
     this->camera.target = { 0, 0 };
-    this->state->player_position = { 0, 0 };
 }
 
 void CameraSystem::tick() {
-    std::cout << this->state->player_position.x << "," << this->state->player_position.y << std::endl;
+    this->camera.offset = { GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f };
     this->camera.target = this->state->player_position;
 }
 
