@@ -1,21 +1,22 @@
 #include "tilemap.h"
 #include <raylib.h>
 
-const int TILE_SIZE = 100;
+const float TILE_SIZE = 160.0f;
 
 void TilemapSystem::init() {
     this->state->ground_dimensions = { 10, 10 };
+    this->grillTexture = LoadTexture("../assets/grill.png");
 }
 
 void TilemapSystem::draw() {
     for (int x = 0; x < this->state->ground_dimensions.x; x++) {
         for (int y = 0; y < this->state->ground_dimensions.y; y++) {
-            DrawRectangle(
-                x * TILE_SIZE,
-                y * TILE_SIZE,
-                TILE_SIZE,
-                TILE_SIZE,
-                (x + y) % 2 == 1 ? DARKGRAY : GRAY
+            DrawTextureEx(
+                this->grillTexture,
+                { x * TILE_SIZE, y * TILE_SIZE },
+                0.0f,
+                10.0f,
+                WHITE
             );
         }
     }

@@ -4,6 +4,7 @@
 
 void LevelSystem::init() {
     this->state->player_baked = false;
+    return;
     this->state->waiting_counters = {
         Counter{ObstacleColor::Red, 2.0f},
         Counter{ObstacleColor::Green, 2.0f},
