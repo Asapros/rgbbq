@@ -1,7 +1,25 @@
 #pragma once
 
-#include "obstacle_template.h"
-#include "system.h"
+#include <raylib.h>
+enum class ObstacleColor {
+    Red,
+    Green,
+    Blue,
+    Yellow
+};
+
+constexpr Color obstacle_color_to_raylib(ObstacleColor color)
+{
+    switch (color)
+    {
+    case ObstacleColor::Red:   return GetColor(0xFF0000FF);
+    case ObstacleColor::Green: return GetColor(0x00FF00FF);
+    case ObstacleColor::Blue:  return GetColor(0x0000FFFF);
+    case ObstacleColor::Yellow:  return GetColor(0xFFFF00FF);
+    }
+
+    return BLANK;
+}
 
 struct Obstacle {
     float remaining_seconds;
@@ -11,14 +29,3 @@ struct Obstacle {
     bool triggered;
 };
 
-struct ObstacleSystem : System {
-    private:
-    std::vector<Obstacle> obstacles;
-
-    public:
-    using System::System;
-
-    void init() override;
-    void tick() override;
-    void draw() override;
-};

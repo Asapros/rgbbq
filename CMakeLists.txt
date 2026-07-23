@@ -11,7 +11,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
 find_package(raylib REQUIRED)
 
-file(GLOB SRC CONFIGURE_DEPENDS "src/*.cpp" "src/*.h")
+file(GLOB_RECURSE SRC CONFIGURE_DEPENDS "src/*.cpp" "src/*.h")
 add_executable(gmtk-2026 ${SRC})
 
 target_compile_options(gmtk-2026 PRIVATE

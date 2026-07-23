@@ -1,16 +1,18 @@
 #include "obstacle.h"
-#include "obstacle_template.h"
 #include <raylib.h>
 
 void ObstacleSystem::init() {
-    this->obstacles = {
-        Obstacle{1.0f, ObstacleColor::Red, {0,0}, {200, 200}, false},
-        Obstacle{1.0f, ObstacleColor::Green, {400,0}, {100, 400}, false},
-        Obstacle{1.0f, ObstacleColor::Blue, {500,500}, {200, 200}, false},
-    };
+    this->obstacles = {};
 }
 
+const int MARGIN = 25;
+
 void ObstacleSystem::tick() {
+    for (Obstacle& obstacle : this->state->waiting_obstacles) {
+        this->obstacles.push_back(obstacle);
+    }
+    this->state->waiting_obstacles.clear();
+
     for (ObstacleColor color : this->state->triggered_counters) {
         for (Obstacle& incoming : this->obstacles) {
             if (incoming.triggered || incoming.color != color) { continue; }
@@ -25,6 +27,18 @@ void ObstacleSystem::tick() {
     std::erase_if(this->obstacles, [](const Obstacle& obstacle) {
         return obstacle.triggered && obstacle.remaining_seconds < 0;
     });
+
+    for (Obstacle &obstacle : this->obstacles) {
+        if (
+            obstacle.triggered
+            && this->state->player_position.x > obstacle.position.x - MARGIN
+            && this->state->player_position.x < obstacle.position.x + obstacle.area_of_effect.x + MARGIN
+            && this->state->player_position.y > obstacle.position.y - MARGIN
+            && this->state->player_position.y < obstacle.position.y + obstacle.area_of_effect.y + MARGIN
+           ) {
+            this->state->player_baked = true;
+        }
+    }
 }
 
 void ObstacleSystem::draw() {

@@ -8,4 +8,5 @@ struct LevelSystem : System {
 
     void init() override;
     void tick() override;
+    void after_draw() override;
 };

@@ -1,11 +1,11 @@
 #include "game.h"
-#include "camera.h"
-#include "counter.h"
-#include "level.h"
-#include "obstacle.h"
-#include "player.h"
-#include "tilemap.h"
-#include <memory>
+#include "systems/camera.h"
+#include "systems/tilemap.h"
+#include "systems/counter.h"
+#include "systems/obstacle.h"
+#include "systems/player.h"
+#include "systems/level.h"
+
 #include <raylib.h>
 
 Game::Game() {

@@ -2,10 +2,14 @@
 
 #include <raylib.h>
 #include <vector>
-#include "obstacle_color.h"
+#include "obstacle.h"
+#include "counter.h"
 
 struct GameState {
     Vector2 player_position;
+    bool player_baked;
     Vector2 ground_dimensions;
     std::vector<ObstacleColor> triggered_counters;
+    std::vector<Obstacle> waiting_obstacles;
+    std::vector<Counter> waiting_counters;
 };

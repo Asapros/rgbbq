@@ -1,7 +1,6 @@
 #pragma once
 
-#include "camera.h"
-#include "state.h"
+#include "systems/system.h"
 #include <memory>
 #include <raylib.h>
 #include <vector>

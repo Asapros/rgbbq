@@ -27,8 +27,8 @@ void PlayerSystem::tick() {
 
 void PlayerSystem::draw() {
     DrawRectangle(
-        this->state->player_position.x,
-        this->state->player_position.y,
+        this->state->player_position.x - 50,
+        this->state->player_position.y - 50,
         100,
         100,
         YELLOW
