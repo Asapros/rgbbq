@@ -7,6 +7,7 @@ struct LevelSystem : System {
     private:
         int level;
         int stage;
+        float level_timer;
     public:
     using System::System;
 

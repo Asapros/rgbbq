@@ -25,5 +25,7 @@ struct Obstacle {
     Vector2 position;
     Vector2 area_of_effect;
     bool triggered;
+
+    Obstacle(Vector2 unit_position, Vector2 unit_aoe, ObstacleColor color);
 };
 

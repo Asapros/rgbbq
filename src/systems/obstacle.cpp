@@ -9,6 +9,10 @@ void ObstacleSystem::init() {
 const int MARGIN = 25;
 
 void ObstacleSystem::tick() {
+    if (this->state->player_baked) {
+        this->obstacles = {};
+        this->state->remaining_obstacles = 0;
+    }
     for (Obstacle& obstacle : this->state->waiting_obstacles) {
         this->obstacles.push_back(obstacle);
         this->state->remaining_obstacles += 1;
@@ -54,7 +58,7 @@ void ObstacleSystem::draw() {
             obstacle.position.y,
             obstacle.area_of_effect.x,
             obstacle.area_of_effect.y,
-            Fade(obstacle_color_to_raylib(obstacle.color), obstacle.triggered ? 1.0f : 0.4f)
+            Fade(obstacle_color_to_raylib(obstacle.color), obstacle.triggered ? 1.0f : 0.6f)
         );
     }
     EndBlendMode();

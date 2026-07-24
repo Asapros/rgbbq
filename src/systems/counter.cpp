@@ -8,6 +8,9 @@ void CounterSystem::init() {
 }
 
 void CounterSystem::tick() {
+    if (this->state->player_baked) {
+        this->counters = {};
+    }
     for (Counter& counter : this->state->waiting_counters) {
         this->counters.push_back(counter);
     }
