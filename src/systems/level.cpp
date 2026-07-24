@@ -6,8 +6,8 @@
 
 
 void LevelSystem::init() {
-    this->level = 2;
-    this->stage = 0;
+    this->level = 3;
+    this->stage = 4;
     this->state->player_baked = false;
     this->level_timer = 0;
 }
@@ -186,49 +186,102 @@ void LevelSystem::tick() {
                         this->state->ground_dimensions.x * 160.0f / 2 - 40.0f,
                         this->state->ground_dimensions.y * 160.0f / 2 - 80.0f,
                     };
-                    this->state->waiting_counters = {
-                        Counter{ObstacleColor::Red, 2.0f},
-                        Counter{ObstacleColor::Green, 2.5f},
-                        Counter{ObstacleColor::Blue, 3.0f},
-                    };
-                    this->state->waiting_obstacles = {
-                        Obstacle({ 0, 0 }, { 10, 1 }, ObstacleColor::Red),
-                        Obstacle({ 0, 9 }, { 10, 1 }, ObstacleColor::Red),
-                        Obstacle({ 0, 1 }, { 1, 8 }, ObstacleColor::Red),
-                        Obstacle({ 9, 1 }, { 1, 8 }, ObstacleColor::Red),
-                        
-                        Obstacle({ 1, 1 }, { 8, 1 }, ObstacleColor::Green),
-                        Obstacle({ 1, 8 }, { 8, 1 }, ObstacleColor::Green),
-                        Obstacle({ 1, 2 }, { 1, 6 }, ObstacleColor::Green),
-                        Obstacle({ 8, 2 }, { 1, 6 }, ObstacleColor::Green),
+                    this->state->waiting_counters.push_back(Counter{ObstacleColor::Red, 2.0f});
+                    this->state->waiting_counters.push_back(Counter{ObstacleColor::Green, 2.5f});
+                    this->state->waiting_counters.push_back(Counter{ObstacleColor::Blue, 3.0f});
 
-                        Obstacle({ 2, 2 }, { 6, 1 }, ObstacleColor::Blue),
-                        Obstacle({ 2, 7 }, { 6, 1 }, ObstacleColor::Blue),
-                        Obstacle({ 2, 3 }, { 1, 4 }, ObstacleColor::Blue),
-                        Obstacle({ 7, 3 }, { 1, 4 }, ObstacleColor::Blue),
-                    };
+                    this->state->waiting_obstacles.push_back(Obstacle({ 0, 0 }, { 10, 1 }, ObstacleColor::Red));
+                    this->state->waiting_obstacles.push_back(Obstacle({ 0, 9 }, { 10, 1 }, ObstacleColor::Red));
+                    this->state->waiting_obstacles.push_back(Obstacle({ 0, 1 }, { 1, 8 }, ObstacleColor::Red));
+                    this->state->waiting_obstacles.push_back(Obstacle({ 9, 1 }, { 1, 8 }, ObstacleColor::Red));
+
+                    this->state->waiting_obstacles.push_back(Obstacle({ 1, 1 }, { 8, 1 }, ObstacleColor::Green));
+                    this->state->waiting_obstacles.push_back(Obstacle({ 1, 8 }, { 8, 1 }, ObstacleColor::Green));
+                    this->state->waiting_obstacles.push_back(Obstacle({ 1, 2 }, { 1, 6 }, ObstacleColor::Green));
+                    this->state->waiting_obstacles.push_back(Obstacle({ 8, 2 }, { 1, 6 }, ObstacleColor::Green));
+
+                    this->state->waiting_obstacles.push_back(Obstacle({ 2, 2 }, { 6, 1 }, ObstacleColor::Blue));
+                    this->state->waiting_obstacles.push_back(Obstacle({ 2, 7 }, { 6, 1 }, ObstacleColor::Blue));
+                    this->state->waiting_obstacles.push_back(Obstacle({ 2, 3 }, { 1, 4 }, ObstacleColor::Blue));
+                    this->state->waiting_obstacles.push_back(Obstacle({ 7, 3 }, { 1, 4 }, ObstacleColor::Blue));
                     stage++;
                     break;
                 case 1:
                     if (this->state->remaining_obstacles > 8) {
                         break;
                     };
-                    this->state->waiting_counters.push_back(Counter{ObstacleColor::Red, 1.0f});
-                    this->state->waiting_obstacles.push_back(Obstacle({ 3, 3 }, { 4, 1 }, ObstacleColor::Red));
-                    this->state->waiting_obstacles.push_back(Obstacle({ 3, 6 }, { 4, 1 }, ObstacleColor::Red));
-                    this->state->waiting_obstacles.push_back(Obstacle({ 3, 4 }, { 1, 2 }, ObstacleColor::Red));
-                    this->state->waiting_obstacles.push_back(Obstacle({ 6, 4 }, { 1, 2 }, ObstacleColor::Red));
+                    this->state->waiting_counters.push_back(Counter{ObstacleColor::Magenta, 1.0f});
+                    this->state->waiting_obstacles.push_back(Obstacle({ 3, 3 }, { 4, 1 }, ObstacleColor::Magenta));
+                    this->state->waiting_obstacles.push_back(Obstacle({ 3, 6 }, { 4, 1 }, ObstacleColor::Magenta));
+                    this->state->waiting_obstacles.push_back(Obstacle({ 3, 4 }, { 1, 2 }, ObstacleColor::Magenta));
+                    this->state->waiting_obstacles.push_back(Obstacle({ 6, 4 }, { 1, 2 }, ObstacleColor::Magenta));
                     stage++;
                     break;
                 case 2:
                     if (this->state->remaining_obstacles > 8) {
                         break;
                     };
-                    this->state->waiting_counters.push_back(Counter{ObstacleColor::Green, 1.0f});
-                    this->state->waiting_obstacles.push_back(Obstacle({ 4, 4 }, { 2, 2 }, ObstacleColor::Green));
+                    this->state->waiting_counters.push_back(Counter{ObstacleColor::Cyan, 1.0f});
+                    this->state->waiting_obstacles.push_back(Obstacle({ 4, 4 }, { 2, 2 }, ObstacleColor::Cyan));
                     stage++;
                     break;
+                case 3:
+                    if (this->state->remaining_obstacles == 0) {
+                        stage++;
+                    }
+                    break;
+                case 4:
+                    this->state->waiting_counters.push_back(Counter{ObstacleColor::Red, 1.0f});
+                    this->state->waiting_obstacles.push_back(Obstacle({ 4, 4 }, { 2, 2 }, ObstacleColor::Red));
+                    this->state->waiting_counters.push_back(Counter{ObstacleColor::Green, 1.5f});
+                    this->state->waiting_obstacles.push_back(Obstacle({ 3, 3 }, { 4, 1 }, ObstacleColor::Green));
+                    this->state->waiting_obstacles.push_back(Obstacle({ 3, 6 }, { 4, 1 }, ObstacleColor::Green));
+                    this->state->waiting_obstacles.push_back(Obstacle({ 3, 4 }, { 1, 2 }, ObstacleColor::Green));
+                    this->state->waiting_obstacles.push_back(Obstacle({ 6, 4 }, { 1, 2 }, ObstacleColor::Green));
+                    this->state->waiting_counters.push_back(Counter{ObstacleColor::Blue, 2.0f});
+                    this->state->waiting_obstacles.push_back(Obstacle({ 2, 2 }, { 6, 1 }, ObstacleColor::Blue));
+                    this->state->waiting_obstacles.push_back(Obstacle({ 2, 7 }, { 6, 1 }, ObstacleColor::Blue));
+                    this->state->waiting_obstacles.push_back(Obstacle({ 2, 3 }, { 1, 4 }, ObstacleColor::Blue));
+                    this->state->waiting_obstacles.push_back(Obstacle({ 7, 3 }, { 1, 4 }, ObstacleColor::Blue));
+                    stage++;
+                    break;
+                case 5:
+                    if (this->state->remaining_obstacles > 8) {
+                        break;
+                    };
+                    this->state->waiting_counters.push_back(Counter{ObstacleColor::Magenta, 1.0f});
+                    this->state->waiting_obstacles.push_back(Obstacle({ 1, 1 }, { 8, 1 }, ObstacleColor::Magenta));
+                    this->state->waiting_obstacles.push_back(Obstacle({ 1, 8 }, { 8, 1 }, ObstacleColor::Magenta));
+                    this->state->waiting_obstacles.push_back(Obstacle({ 1, 2 }, { 1, 6 }, ObstacleColor::Magenta));
+                    this->state->waiting_obstacles.push_back(Obstacle({ 8, 2 }, { 1, 6 }, ObstacleColor::Magenta));
+                    stage++;
+                    break;
+                case 6:
+                    if (this->state->remaining_obstacles > 8) {
+                        break;
+                    };
+                    this->state->waiting_counters.push_back(Counter{ObstacleColor::Cyan, 1.0f});
+                    this->state->waiting_obstacles.push_back(Obstacle({ 0, 0 }, { 10, 1 }, ObstacleColor::Cyan));
+                    this->state->waiting_obstacles.push_back(Obstacle({ 0, 9 }, { 10, 1 }, ObstacleColor::Cyan));
+                    this->state->waiting_obstacles.push_back(Obstacle({ 0, 1 }, { 1, 8 }, ObstacleColor::Cyan));
+                    this->state->waiting_obstacles.push_back(Obstacle({ 9, 1 }, { 1, 8 }, ObstacleColor::Cyan));
+                    stage++;
+                    break;
+                case 7:
+                    if (this->state->remaining_obstacles == 0) {
+                        level++;
+                        stage = 0;
+                    }
+                    break;
             }
+            break;
+        case 4:
+            switch (this->stage) {
+                case 0:
+                    break;
+            }
+            break;
+            
     }
 }
 

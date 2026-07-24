@@ -4,9 +4,10 @@
 void ObstacleSystem::init() {
     this->obstacles = {};
     this->state->remaining_obstacles = 0;
+    this->death_sound = LoadSound("../assets/death.wav");
 }
 
-const int MARGIN = 25;
+const int MARGIN = 0;
 
 void ObstacleSystem::tick() {
     if (this->state->player_baked) {
@@ -45,6 +46,7 @@ void ObstacleSystem::tick() {
             && this->state->player_position.y > obstacle.position.y - MARGIN
             && this->state->player_position.y < obstacle.position.y + obstacle.area_of_effect.y + MARGIN
            ) {
+            PlaySound(this->death_sound);
             this->state->player_baked = true;
         }
     }

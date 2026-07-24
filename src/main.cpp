@@ -7,6 +7,7 @@ int main()
 
     InitWindow(0, 0, "GMTK 2026");
     ToggleBorderlessWindowed();
+    InitAudioDevice();
 
     SetTargetFPS(0);
     
@@ -24,7 +25,7 @@ int main()
 
         EndDrawing();
     }
-
+    CloseAudioDevice();
     CloseWindow();
 
     return 0;
