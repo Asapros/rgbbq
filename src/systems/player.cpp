@@ -50,8 +50,8 @@ void PlayerSystem::draw() {
     };
 
     Rectangle dest = {
-        this->state->player_position.x - 50,
-        this->state->player_position.y - 50,
+        this->state->player_position.x - 80,
+        this->state->player_position.y - 160,
         (float)texture.width*10.0f,
         (float)texture.height*10.0f
     };
@@ -64,4 +64,8 @@ void PlayerSystem::draw() {
         0.0f,
         WHITE
     );
+    if (false) {
+        // Draw hitbox
+        DrawRectangle(this->state->player_position.x - 10, this->state->player_position.y - 10, 20, 20, RED);
+    }
 }

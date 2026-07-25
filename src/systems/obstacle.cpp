@@ -13,10 +13,12 @@ void ObstacleSystem::tick() {
     if (this->state->player_baked) {
         this->obstacles = {};
         this->state->remaining_obstacles = 0;
+        this->state->waiting_obstacles = {};
+        return;
     }
     for (Obstacle& obstacle : this->state->waiting_obstacles) {
         this->obstacles.push_back(obstacle);
-        this->state->remaining_obstacles += 1;
+        this->state->remaining_obstacles++;
     }
     this->state->waiting_obstacles.clear();
 

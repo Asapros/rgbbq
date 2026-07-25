@@ -7,7 +7,8 @@ enum class ObstacleColor {
     Blue,
     Yellow,
     Magenta,
-    Cyan
+    Cyan,
+    Purple
 };
 
 constexpr Color obstacle_color_to_raylib(ObstacleColor color)
@@ -20,6 +21,7 @@ constexpr Color obstacle_color_to_raylib(ObstacleColor color)
     case ObstacleColor::Yellow:   return GetColor(0xFFFF00FF);
     case ObstacleColor::Magenta: return GetColor(0xFF00FFFF);
     case ObstacleColor::Cyan:  return GetColor(0x00FFFFFF);
+    case ObstacleColor::Purple: return PURPLE;
     }
 
     return BLANK;

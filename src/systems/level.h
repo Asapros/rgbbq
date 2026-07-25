@@ -8,6 +8,8 @@ struct LevelSystem : System {
         int level;
         int stage;
         float level_timer;
+        int level_var_1;
+        int level_var_2;
     public:
     using System::System;
 

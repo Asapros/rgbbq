@@ -6,8 +6,8 @@
 
 
 void LevelSystem::init() {
-    this->level = 3;
-    this->stage = 4;
+    this->level = 0;
+    this->stage = 0;
     this->state->player_baked = false;
     this->level_timer = 0;
 }
@@ -278,10 +278,221 @@ void LevelSystem::tick() {
         case 4:
             switch (this->stage) {
                 case 0:
+                    this->level_var_1 = 0;
+                    this->level_var_2 = 0;
+                    stage++;
+                    break;
+                case 1:
+                    if (this->state->remaining_counters >= 2) {
+                        break;
+                    }
+                    if ((!this->state->is_paused || this->state->paused_color != ObstacleColor::Red) && this->level_var_1 <= 9) {
+                        this->state->waiting_counters.push_back(Counter{ObstacleColor::Red, 0.5f});
+                        this->state->waiting_obstacles.push_back(Obstacle({ (float) level_var_1, 0 }, { 1, 10 }, ObstacleColor::Red));
+                        this->level_var_1++;
+                    }
+                    if ((!this->state->is_paused || this->state->paused_color != ObstacleColor::Green) && this->level_var_2 <= 9) {
+                        this->state->waiting_counters.push_back(Counter{ObstacleColor::Green, 0.5f});
+                        this->state->waiting_obstacles.push_back(Obstacle({ 0, (float) level_var_2 }, { 10, 1 }, ObstacleColor::Green));
+                        this->level_var_2++;
+                    }
+                    if (this->level_var_1 == 10 && this->level_var_2 == 10) {
+                        stage++;
+                    }
+                    break;
+                case 2:
+                    this->level_var_1 = 0;
+                    this->level_var_2 = 0;
+                    stage++;
+                    break;
+                case 3:
+                    if (this->state->remaining_counters >= 2) {
+                        break;
+                    }
+                    if ((!this->state->is_paused || this->state->paused_color != ObstacleColor::Blue) && this->level_var_1 <= 9) {
+                        this->state->waiting_counters.push_back(Counter{ObstacleColor::Blue, 0.5f});
+                        this->state->waiting_obstacles.push_back(Obstacle({ (float) 9 - level_var_1, 0 }, { 1, 10 }, ObstacleColor::Blue));
+                        this->level_var_1++;
+                    }
+                    if ((!this->state->is_paused || this->state->paused_color != ObstacleColor::Red) && this->level_var_2 <= 9) {
+                        this->state->waiting_counters.push_back(Counter{ObstacleColor::Red, 0.5f});
+                        this->state->waiting_obstacles.push_back(Obstacle({ 0, (float) 9 - level_var_2 }, { 10, 1 }, ObstacleColor::Red));
+                        this->level_var_2++;
+                    }
+                    if (this->level_var_1 == 10 && this->level_var_2 == 10) {
+                        stage++;
+                    }
+                    break;
+                case 4:
+                    level++;
+                    stage = 0;
+                    break;
+
+            }
+            break;
+        case 5:
+            switch (this->stage) {
+                case 0:
+                    if (IsKeyPressed(KEY_SPACE)) {
+                        stage++;
+                    }
+                    this->level_var_1 = 0;
+                    break;
+                case 1: {
+                    if (this->state->remaining_obstacles > 0) {
+                        break;
+                    }
+                    if (this->level_var_1 == 3) {
+                        level++;
+                        stage = 0;
+                    }
+                    this->state->waiting_counters.push_back(Counter{ObstacleColor::Red, 5.0f});
+                    this->state->waiting_counters.push_back(Counter{ObstacleColor::Green, 5.0f});
+                    this->state->waiting_counters.push_back(Counter{ObstacleColor::Blue, 5.0f});
+                    ObstacleColor order[] = {ObstacleColor::Red, ObstacleColor::Green, ObstacleColor::Blue};
+                    for (int i = 2; i > 0; i--)
+                    {
+                        int j = GetRandomValue(0, i);
+
+                        ObstacleColor temp = order[i];
+                        order[i] = order[j];
+                        order[j] = temp;
+                    }
+                    this->state->waiting_obstacles.push_back(Obstacle({0, 0}, {5, 5}, order[0]));
+                    this->state->waiting_obstacles.push_back(Obstacle({5, 0}, {5, 5}, order[1]));
+                    this->state->waiting_obstacles.push_back(Obstacle({0, 5}, {5, 5}, order[2]));
+                    this->state->waiting_obstacles.push_back(Obstacle({5, 5}, {5, 5}, order[0]));
+
+                    this->state->waiting_obstacles.push_back(Obstacle({0, 0}, {5, 5}, order[2]));
+                    this->state->waiting_obstacles.push_back(Obstacle({5, 0}, {5, 5}, order[0]));
+                    this->state->waiting_obstacles.push_back(Obstacle({0, 5}, {5, 5}, order[1]));
+                    this->state->waiting_obstacles.push_back(Obstacle({5, 5}, {5, 5}, order[2]));
+                    level_var_1++;
+                    break;
+                }
+            }
+            break;
+        case 6:
+            switch (this->stage) {
+                case 0:
+                    level_timer = 0;
+                    stage++;
+                    break;
+                case 1:
+                    if (level_timer > 30 && this->state->remaining_obstacles == 0) {
+                        level++;
+                        stage = 0;
+                        break;
+                    }
+                    if (this->state->remaining_counters >= 3) { 
+                        break;
+                    }
+                    ObstacleColor new_color;
+                    for (ObstacleColor color : {ObstacleColor::Red, ObstacleColor::Green, ObstacleColor::Blue}) {
+                        bool found = false;
+                        for (Counter counter : this->state->counters) {
+                            if (color == counter.color) {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            new_color = color;
+                            break;
+                        }
+                    }
+                    for (float x = 0; x < this->state->ground_dimensions.x; x++) {
+                        for (float y = 0; y < this->state->ground_dimensions.y; y++) {
+                            if (GetRandomValue(1, 100) > 80) { continue; }
+                            this->state->waiting_obstacles.push_back(Obstacle(
+                                {x, y}, {1, 1}, new_color
+                            ));
+                        }
+                    }
+                    this->state->waiting_counters.push_back(Counter(new_color, 5.0f));
+
                     break;
             }
             break;
-            
+        case 7:
+            switch (this->stage) {
+                case 0:
+                    level_timer = 0;
+                    this->state->ground_dimensions = { 5, 5 };
+                    stage++;
+                    break;
+                case 1: {
+                    if (level_timer > 20) {
+                        level++;
+                        stage = 0;
+                    }
+                    ObstacleColor color;
+                    switch (((int) level_timer) % 3) {
+                        case 0:
+                            color = ObstacleColor::Red;
+                            break;
+                        case 1:
+                            color = ObstacleColor::Green;
+                            break;
+                        case 2:
+                            color = ObstacleColor::Blue;
+                            break;
+                    }
+                    for (Counter counter : this->state->counters) {
+                        if (counter.color == color) {
+                            return;
+                        }
+                    }
+                    this->state->waiting_counters.push_back(Counter(color, 3.0f));
+                    this->state->waiting_obstacles.push_back(Obstacle(
+                                { static_cast<float>(((int) (this->state->player_position.x / 160.0f)) - 2), static_cast<float>(((int) (this->state->player_position.y / 160.0f)) - 2) }, { 5, 5 }, color));
+
+                    break;
+                }
+            }
+            break;
+        case 8:
+            switch (this->stage) {
+                case 0:
+                    this->state->ground_dimensions = { 5, 5 };
+                    if (IsKeyPressed(KEY_SPACE)) {
+                        stage++;
+                        this->level_timer = 0;
+                    }
+                    break;
+                case 1:
+                    if (this->level_timer > 2) {
+                        stage++;
+                        this->level_timer = 0;
+                    }
+                    break;
+                case 2:
+                    if (this->level_timer > 2) {
+                        stage++;
+                    }
+                    break;
+                case 3:
+                    this->state->waiting_counters.push_back(Counter(ObstacleColor::Red, 10.0f));
+                    this->state->waiting_counters.push_back(Counter(ObstacleColor::Green, 10.0f));
+                    this->state->waiting_counters.push_back(Counter(ObstacleColor::Blue, 10.0f));
+                    this->state->waiting_obstacles.push_back(Obstacle({ 0, 0 }, { this->state->ground_dimensions.x, this->state->ground_dimensions.y }, ObstacleColor::Red));
+                    this->state->waiting_obstacles.push_back(Obstacle({ 0, 0 }, { this->state->ground_dimensions.x, this->state->ground_dimensions.y }, ObstacleColor::Green));
+                    this->state->waiting_obstacles.push_back(Obstacle({ 0, 0 }, { this->state->ground_dimensions.x, this->state->ground_dimensions.y }, ObstacleColor::Blue));
+                    level++;
+                    break;
+            }
+            break;
+        case 9:
+            switch (this->stage) {
+                case 0:
+                    if (IsKeyPressed(KEY_R)) {
+                        level = 0;
+                    }
+                    break;
+            }
+            break;
+        case 10:
+            break;
     }
 }
 
@@ -309,14 +520,14 @@ void LevelSystem::after_draw() {
     if (this->level == 1) {
         if (this->stage == 1) {
             header = "";
-            subtitles = {"", "", "", "", "  Welcome to <>"};
+            subtitles = {"", "", "", "", "  Welcome to <>", "   Press arrow keys to move"};
 
             draw_overlay = true;
             clear_background = false;
         }
         if (this->stage == 2) {
             header = "Avoid the lit-up grates!";
-            subtitles = {"They're gonna BAKE you once the timer finishes", "Press <SPACE> to continue"};
+            subtitles = {"They're gonna BAKE you once their timer runs out", "Press <SPACE> to continue"};
             draw_overlay = true;
         }
         if (this->stage == 6) {
@@ -343,7 +554,7 @@ void LevelSystem::after_draw() {
         }
         if (this->stage == 4) {
             header = "";
-            subtitles = {"", "", "", "", "  Press <1>, <2>, ... to toggle timers", "  Note that only one may be paused at a time"};
+            subtitles = {"", "", "", "", "  Press <1>, <2>, ... to toggle timers", "  Note that only one timer may be paused at a time"};
             clear_background = false;
             draw_overlay = true;
         }
@@ -353,11 +564,44 @@ void LevelSystem::after_draw() {
             draw_overlay = true;
         }
     }
-    if (this->state->player_baked) {
-        header = "You got BAKED!";
-        header_color = RED;
-        subtitles = { std::format("Press <SPACE> to restart from level {}", this->level) };
+    if (this->level == 5) {
+        if (this->stage == 0) {
+            header = "Did you notice the colors blend?";
+            subtitles = {"Let's see if you can decode the primary colors behind them", "Press <SPACE> to continue"};
+            draw_overlay = true;
+        }
+    }
+    if (this->level == 8) {
+        if (this->stage == 0) {
+            header = "You've been doing exceptionally well";
+            subtitles = {"for a potato...", "Press <SPACE> to continue"};
+            draw_overlay = true;
+        }
+    }
+    if (this->level == 9) {
+        if (this->stage == 0) {
+            header = "Thank you for playing!";
+            subtitles = {"You can press <R> to start from the begining"};
+            draw_overlay = true;
+        }
+    }
+    if (this->level == 10) {
+        header = "Bonus level";
+        subtitles = {"for those who glitched their way here"};
         draw_overlay = true;
+    }
+    if (this->state->player_baked) {
+        if (this->level == 9) {
+            header = "You got BAKED!";
+            subtitles = {"Press <SPACE> to continue"};
+            header_color = RED;
+            draw_overlay = true;
+        } else {
+            header = "You got BAKED!";
+            header_color = RED;
+            subtitles = { std::format("Press <SPACE> to restart from level {}", this->level) };
+            draw_overlay = true;
+        }
     }
     if (draw_overlay) {
         const int header_width = MeasureText(header.c_str(), HEADER_FONT_SIZE);
