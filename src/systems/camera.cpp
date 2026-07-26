@@ -3,7 +3,7 @@
 
 void CameraSystem::init() {
     this->camera = Camera2D();
-    this->camera.zoom = 1;
+    this->camera.zoom = 0.4f;
     this->camera.offset = { GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f };
     this->camera.target = { 0, 0 };
 }

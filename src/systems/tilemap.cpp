@@ -5,8 +5,8 @@ const float TILE_SIZE = 160.0f;
 
 void TilemapSystem::init() {
     this->state->ground_dimensions = { 10, 10 };
-    this->grillTexture = LoadTexture("../assets/grill.png");
-    this->backgroundTexture = LoadTexture("../assets/background.png");
+    this->grillTexture = LoadTexture("assets/grill.png");
+    this->backgroundTexture = LoadTexture("assets/background.png");
 }
 
 void TilemapSystem::draw() {

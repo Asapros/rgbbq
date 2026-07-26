@@ -4,7 +4,7 @@
 
 void CounterSystem::init() {
     this->state->counters = {};
-    this->texture = LoadTexture("../assets/timer.png");
+    this->texture = LoadTexture("assets/timer.png");
     this->state->is_paused = false;
     this->state->remaining_counters = 0;
 }
@@ -56,8 +56,8 @@ void CounterSystem::tick() {
 }
 
 void CounterSystem::after_draw() {
-    const int SCALE = 16;
-    const int FONT_SIZE = 120;
+    const int SCALE = 6;
+    const int FONT_SIZE = 50;
 
     for (size_t i = 0; i < this->state->counters.size(); i++) {
         Counter counter = this->state->counters[i];
@@ -72,6 +72,6 @@ void CounterSystem::after_draw() {
         DrawTextureEx(this->texture, { x_offset, 0 }, 0.0f, SCALE, WHITE);
         std::string text = std::format("{:01.1f}", counter.remaining_seconds);
         int width = MeasureText(text.c_str(), FONT_SIZE);
-        DrawText(text.c_str(), x_offset + this->texture.width*SCALE/2.0f-width/2.0f, this->texture.height*SCALE/4.0f-32.0f, FONT_SIZE, WHITE);
+        DrawText(text.c_str(), x_offset + this->texture.width*SCALE/2.0f-width/2.0f, this->texture.height*SCALE/4.0f - 16.0f, FONT_SIZE, WHITE);
     }
 }

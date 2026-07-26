@@ -4,12 +4,12 @@
 
 void PlayerSystem::init() {
     this->state->player_position = { 0, 0 };
-    this->player_textures[0] = LoadTexture("../assets/potato-0.png");
-    this->player_textures[1] = LoadTexture("../assets/potato-1.png");
-    this->player_textures[2] = LoadTexture("../assets/potato-2.png");
-    this->player_textures[3] = LoadTexture("../assets/potato-3.png");
+    this->player_textures[0] = LoadTexture("assets/potato-0.png");
+    this->player_textures[1] = LoadTexture("assets/potato-1.png");
+    this->player_textures[2] = LoadTexture("assets/potato-2.png");
+    this->player_textures[3] = LoadTexture("assets/potato-3.png");
 }
-const float speed = 6.0;
+const float speed = 700.0;
 
 void PlayerSystem::tick() {
     Vector2 velocity = { 0, 0 };
@@ -33,7 +33,7 @@ void PlayerSystem::tick() {
         velocity.y -= 1;
         moving = true;
     }
-    this->state->player_position += Vector2Normalize(velocity) * speed;
+    this->state->player_position += Vector2Normalize(velocity) * speed * GetFrameTime();
     if (moving) {
         this->animation_timer = (this->animation_timer + (int)(GetFrameTime()*1000));
     }

@@ -2,20 +2,21 @@
 #include <format>
 #include <raylib.h>
 #include <string>
-#include "../debug.h"
 
 
 void LevelSystem::init() {
-    this->level = 0;
+    this->level = 6;
     this->stage = 0;
     this->state->player_baked = false;
     this->level_timer = 0;
+    this->continue_sound = LoadSound("assets/click.wav");
 }
 
 void LevelSystem::tick() {
     this->level_timer += GetFrameTime();
     if (this->state->player_baked) {
         if (IsKeyPressed(KEY_SPACE)) {
+            PlaySound(this->continue_sound);
             this->state->player_baked = false;
             this->stage = 0;
         }
@@ -28,12 +29,14 @@ void LevelSystem::tick() {
                 case 1:
                     if (IsKeyPressed(KEY_SPACE)) {
                         stage++;
+                        PlaySound(this->continue_sound);
                     }
                     break;
                 case 2:
                     this->level = 1;
                     this->stage = 0;
                     this->level_timer = 0;
+                    this->state->ground_dimensions = { 10, 10 };
                     break;
             }
             break;
@@ -54,6 +57,7 @@ void LevelSystem::tick() {
                 case 2:
                     if (IsKeyPressed(KEY_SPACE)) {
                         stage++;
+                        PlaySound(this->continue_sound);
                     }
                     break;
                 case 3:
@@ -75,6 +79,7 @@ void LevelSystem::tick() {
                 case 6:
                     if (IsKeyPressed(KEY_SPACE)) {
                         stage++;
+                        PlaySound(this->continue_sound);
                     }
                     break;
                 case 7:
@@ -126,6 +131,7 @@ void LevelSystem::tick() {
                     break;
                 case 15:
                     if (IsKeyPressed(KEY_SPACE)) {
+                        PlaySound(this->continue_sound);
                         stage++;
                     }
                     break;
@@ -148,11 +154,13 @@ void LevelSystem::tick() {
                     break;
                 case 1:
                     if (IsKeyPressed(KEY_SPACE)) {
+                        PlaySound(this->continue_sound);
                         stage++;
                     }
                     break;
                 case 2:
                     if (IsKeyPressed(KEY_SPACE)) {
+                        PlaySound(this->continue_sound);
                         stage++;
                     }
                     break;
@@ -170,6 +178,7 @@ void LevelSystem::tick() {
                     break;
                 case 5:
                     if (IsKeyPressed(KEY_SPACE)) {
+                        PlaySound(this->continue_sound);
                         stage++;
                     }
                     break;
@@ -334,6 +343,7 @@ void LevelSystem::tick() {
             switch (this->stage) {
                 case 0:
                     if (IsKeyPressed(KEY_SPACE)) {
+                        PlaySound(this->continue_sound);
                         stage++;
                     }
                     this->level_var_1 = 0;
@@ -379,7 +389,10 @@ void LevelSystem::tick() {
                     stage++;
                     break;
                 case 1:
-                    if (level_timer > 30 && this->state->remaining_obstacles == 0) {
+                    if (level_timer > 20) {
+                        if (this->state->remaining_obstacles > 0) {
+                            break;
+                        }
                         level++;
                         stage = 0;
                         break;
@@ -456,6 +469,7 @@ void LevelSystem::tick() {
                 case 0:
                     this->state->ground_dimensions = { 5, 5 };
                     if (IsKeyPressed(KEY_SPACE)) {
+                        PlaySound(this->continue_sound);
                         stage++;
                         this->level_timer = 0;
                     }
@@ -486,6 +500,7 @@ void LevelSystem::tick() {
             switch (this->stage) {
                 case 0:
                     if (IsKeyPressed(KEY_R)) {
+                        PlaySound(this->continue_sound);
                         level = 0;
                     }
                     break;
@@ -497,8 +512,8 @@ void LevelSystem::tick() {
 }
 
 void LevelSystem::after_draw() {
-    const int HEADER_FONT_SIZE = 150;
-    const int SUBTITLE_FONT_SIZE = 50;
+    const int HEADER_FONT_SIZE = 50;
+    const int SUBTITLE_FONT_SIZE = 20;
     bool clear_background = true;
     bool draw_overlay = false;
     std::string header;
@@ -508,7 +523,7 @@ void LevelSystem::after_draw() {
     if (this->level == 0) {
         if (this->stage == 0) {
             header = "Have you ever wondered...";
-            subtitles = {"How do potatoes feel while being BAKED?", "Press <SPACE> to continue"};
+            subtitles = {"How do potatoes feel when they're being BAKED?", "Press <SPACE> to continue"};
             draw_overlay = true;
         }
         if (this->stage == 1) {
@@ -520,14 +535,14 @@ void LevelSystem::after_draw() {
     if (this->level == 1) {
         if (this->stage == 1) {
             header = "";
-            subtitles = {"", "", "", "", "  Welcome to <>", "   Press arrow keys to move"};
+            subtitles = {"", "", "", "", "  Welcome to RGBBQ", "   Press arrow keys to move"};
 
             draw_overlay = true;
             clear_background = false;
         }
         if (this->stage == 2) {
             header = "Avoid the lit-up grates!";
-            subtitles = {"They're gonna BAKE you once their timer runs out", "Press <SPACE> to continue"};
+            subtitles = {"They're gonna BAKE you once the timer runs out", "Press <SPACE> to continue"};
             draw_overlay = true;
         }
         if (this->stage == 6) {
@@ -559,8 +574,8 @@ void LevelSystem::after_draw() {
             draw_overlay = true;
         }
         if (this->stage == 5) {
-            header = "That would be it";
-            subtitles = {"When it comes to the tutorial", "Good luck!", "(You should know how to continue by now)"};
+            header = "That's all";
+            subtitles = {"As far as the tutorial goes", "Good luck!", "(You should know how to continue by now)"};
             draw_overlay = true;
         }
     }
@@ -577,11 +592,16 @@ void LevelSystem::after_draw() {
             subtitles = {"for a potato...", "Press <SPACE> to continue"};
             draw_overlay = true;
         }
+        if (this->stage == 1) {
+            header = "But there's a reason you've been";
+            subtitles = {"put on a barbeque, right?", "Press <SPACE> to continue"};
+            draw_overlay = true;
+        }
     }
     if (this->level == 9) {
         if (this->stage == 0) {
             header = "Thank you for playing!";
-            subtitles = {"You can press <R> to start from the begining"};
+            subtitles = {"You can press <R> to start from the beginning"};
             draw_overlay = true;
         }
     }
@@ -599,7 +619,7 @@ void LevelSystem::after_draw() {
         } else {
             header = "You got BAKED!";
             header_color = RED;
-            subtitles = { std::format("Press <SPACE> to restart from level {}", this->level) };
+            subtitles = { std::format("Press <SPACE> to retry level {}", this->level) };
             draw_overlay = true;
         }
     }

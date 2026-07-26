@@ -46,4 +46,17 @@ add_custom_target(run
 if (EMSCRIPTEN)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s USE_GLFW=3 -s ASSERTIONS=1 -s WASM=1 -s ASYNCIFY")
   set(CMAKE_EXECUTABLE_SUFFIX ".html") # This line is used to set your executable to build with the emscripten html template so taht you can directly open it.
+  target_link_options(gmtk-2026 PRIVATE
+        "-sEXPORTED_RUNTIME_METHODS=HEAPF32"
+  )
+  target_link_options(gmtk-2026 PRIVATE
+      "--preload-file"
+      "${CMAKE_SOURCE_DIR}/assets@assets"
+  )
+
+  target_link_options(gmtk-2026 PRIVATE
+        "--shell-file"
+        "${CMAKE_SOURCE_DIR}/web/shell.html"
+    )
 endif ()
+

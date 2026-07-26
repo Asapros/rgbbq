@@ -1,6 +1,7 @@
 #pragma once
 
 #include "system.h"
+#include <raylib.h>
 
 
 struct LevelSystem : System {
@@ -10,6 +11,7 @@ struct LevelSystem : System {
         float level_timer;
         int level_var_1;
         int level_var_2;
+        Sound continue_sound;
     public:
     using System::System;
 

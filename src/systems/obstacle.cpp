@@ -4,7 +4,7 @@
 void ObstacleSystem::init() {
     this->obstacles = {};
     this->state->remaining_obstacles = 0;
-    this->death_sound = LoadSound("../assets/death.wav");
+    this->death_sound = LoadSound("assets/death.wav");
 }
 
 const int MARGIN = 0;
